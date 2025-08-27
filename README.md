@@ -35,7 +35,7 @@ As a student and VP of GGC Badminton club, balancing **running sessions** and **
 ## Tech Stack
 
 * **React + Vite** (fast dev server)
-* **TypeScript** (type safety)
+* **JavaScript** (type safety)
 * **Tailwind CSS** (rapid UI)
 * Optional later: state with **Zustand/Redux**, persistence via **Supabase/Firebase**, hosting on **Vercel/Netlify**
 
