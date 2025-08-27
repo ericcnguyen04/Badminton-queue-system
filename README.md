@@ -117,19 +117,13 @@ src/
 
 ---
 
-## License
-
-MIT. Use it for your club, tweak it for your needs.
-
----
-
 ## Credits
 
 Built by a badminton‑obsessed computer engineering student. Feedback and PRs welcome!
 
 ---
 
-## Screenshots / Demo (placeholders)
+<!-- ## Screenshots / Demo (placeholders)
 
 * `/docs/screenshot-dashboard.png`
-* `/docs/demo.mp4` (optional)
+* `/docs/demo.mp4` (optional) -->
