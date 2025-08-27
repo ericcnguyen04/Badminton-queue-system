@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-// Icons removed for compatibility
 
 const BadmintonQueueApp = () => {
   const [playerNames, setPlayerNames] = useState(['', '', '', '']);
@@ -149,7 +148,7 @@ const BadmintonQueueApp = () => {
           queue: nextGroup,
           isActive: newCurrentPlayers.length > 0,
           isRunning: false,
-          timer: 1800
+          timer: 900
         }
       };
     });
@@ -160,7 +159,7 @@ const BadmintonQueueApp = () => {
       ...prev,
       [courtName]: {
         ...prev[courtName],
-                  timer: 900,
+        timer: 900,
         isRunning: false
       }
     }));
@@ -328,7 +327,7 @@ const BadmintonQueueApp = () => {
                   </div>
                 ) : (
                   <>
-                    <span className="text-sm">
+                    <span className="text-sm text-gray-800 font-medium">
                       {index + 1}. {group.join(' vs ')}
                     </span>
                     <div className="flex gap-1">
@@ -356,9 +355,10 @@ const BadmintonQueueApp = () => {
   );
 
   return (
-    <div className="min-h-screen bg-gray-100 p-4">
+    <div className="min-h-screen bg-gray-100">
+      <div className="max-w-full mx-auto p-4">
         {/* Header */}
-        <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
+        <div className="bg-white border rounded-lg shadow-lg p-6 mb-6">
           <h1 className="text-3xl font-bold text-gray-800 mb-6 text-center">
             Badminton Club Queue System
           </h1>
@@ -425,6 +425,7 @@ const BadmintonQueueApp = () => {
             court={courts.far}
             displayName="Court Far"
           />
+        </div>
       </div>
     </div>
   );
