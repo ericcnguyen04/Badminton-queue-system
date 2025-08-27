@@ -7,21 +7,21 @@ const BadmintonQueueApp = () => {
     door: {
       currentPlayers: [],
       queue: [],
-      timer: 1800, // 30 minutes in seconds
+      timer: 900, // 15 minutes in seconds
       isActive: false,
       isRunning: false
     },
     middle: {
       currentPlayers: [],
       queue: [],
-      timer: 1800,
+      timer: 900,
       isActive: false,
       isRunning: false
     },
     far: {
       currentPlayers: [],
       queue: [],
-      timer: 1800,
+      timer: 900,
       isActive: false,
       isRunning: false
     }
@@ -44,7 +44,7 @@ const BadmintonQueueApp = () => {
             court.isRunning = false;
             court.isActive = false;
             court.currentPlayers = [];
-            court.timer = 1800;
+            court.timer = 900;
             
             // Move next group from queue to court if available
             if (court.queue.length > 0) {
@@ -104,7 +104,7 @@ const BadmintonQueueApp = () => {
             queue: nextGroup,
             isActive: true,
             isRunning: true,
-            timer: court.timer === 0 ? 1800 : court.timer
+            timer: court.timer === 0 ? 900 : court.timer
           }
         };
       }
@@ -116,7 +116,7 @@ const BadmintonQueueApp = () => {
           [courtName]: {
             ...court,
             isRunning: true,
-            timer: court.timer === 0 ? 1800 : court.timer
+            timer: court.timer === 0 ? 900 : court.timer
           }
         };
       }
@@ -160,7 +160,7 @@ const BadmintonQueueApp = () => {
       ...prev,
       [courtName]: {
         ...prev[courtName],
-        timer: 1800,
+                  timer: 900,
         isRunning: false
       }
     }));
@@ -241,7 +241,7 @@ const BadmintonQueueApp = () => {
               fill="none"
               stroke={court.isRunning ? "#3b82f6" : "#6b7280"}
               strokeWidth="8"
-              strokeDasharray={`${(court.timer / 1800) * 283} 283`}
+              strokeDasharray={`${(court.timer / 900) * 283} 283`}
               className="transition-all duration-1000"
             />
           </svg>
@@ -305,12 +305,12 @@ const BadmintonQueueApp = () => {
             court.queue.map((group, index) => (
               <div key={index} className="flex items-center justify-between bg-gray-50 p-2 rounded">
                 {editingQueue.court === courtName && editingQueue.index === index ? (
-                  <div className="flex-1 flex gap-2">
+                  <div className="flex-1 flex gap-2 min-w-0">
                     <input
                       type="text"
                       value={editingQueue.value}
                       onChange={(e) => setEditingQueue({...editingQueue, value: e.target.value})}
-                      className="flex-1 px-2 py-1 border rounded"
+                      className="flex-1 px-2 py-1 border rounded min-w-0"
                       placeholder="Name1, Name2, Name3, Name4"
                     />
                     <button
@@ -357,7 +357,6 @@ const BadmintonQueueApp = () => {
 
   return (
     <div className="min-h-screen bg-gray-100 p-4">
-      <div className="w-full mx-auto">
         {/* Header */}
         <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
           <h1 className="text-3xl font-bold text-gray-800 mb-6 text-center">
@@ -426,7 +425,6 @@ const BadmintonQueueApp = () => {
             court={courts.far}
             displayName="Court Far"
           />
-        </div>
       </div>
     </div>
   );
