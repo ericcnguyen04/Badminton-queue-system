@@ -218,7 +218,7 @@ const BadmintonQueueApp = () => {
   };
 
   const CourtModule = ({ courtName, court, displayName }) => (
-    <div className="bg-white rounded-lg shadow-lg p-6 min-h-96">
+    <div className="bg-white rounded-lg shadow-lg p-8 min-h-96">
       <h2 className="text-2xl font-bold text-gray-800 mb-4 text-center">{displayName}</h2>
       
       {/* Timer Circle */}
@@ -260,7 +260,10 @@ const BadmintonQueueApp = () => {
         <div className="bg-blue-50 rounded p-3 min-h-12">
           {court.currentPlayers.length > 0 ? (
             <div className="text-blue-800 font-medium">
-              {court.currentPlayers.join(' vs ')}
+              {court.currentPlayers.length <= 2 
+                ? court.currentPlayers.join(' & ')
+                : `${court.currentPlayers.slice(0, 2).join(' & ')} vs ${court.currentPlayers.slice(2).join(' & ')}`
+              }
             </div>
           ) : (
             <div className="text-gray-500 italic">No players on court</div>
@@ -328,7 +331,10 @@ const BadmintonQueueApp = () => {
                 ) : (
                   <>
                     <span className="text-sm text-gray-800 font-medium">
-                      {index + 1}. {group.join(' vs ')}
+                      {index + 1}. {group.length <= 2 
+                        ? group.join(' & ')
+                        : `${group.slice(0, 2).join(' & ')} vs ${group.slice(2).join(' & ')}`
+                      }
                     </span>
                     <div className="flex gap-1">
                       <button
@@ -356,7 +362,7 @@ const BadmintonQueueApp = () => {
 
   return (
     <div className="min-h-screen bg-gray-100">
-      <div className="max-w-full mx-auto p-4">
+      <div className="max-w-7xl mx-auto p-4">
         {/* Header */}
         <div className="bg-white border rounded-lg shadow-lg p-6 mb-6">
           <h1 className="text-3xl font-bold text-gray-800 mb-6 text-center">
@@ -409,7 +415,7 @@ const BadmintonQueueApp = () => {
         </div>
 
         {/* Court Modules */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
           <CourtModule
             courtName="door"
             court={courts.door}
