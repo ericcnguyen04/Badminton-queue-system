@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 const BadmintonQueueApp = () => {
   const [playerNames, setPlayerNames] = useState(['', '', '', '']);
@@ -6,21 +6,21 @@ const BadmintonQueueApp = () => {
     door: {
       currentPlayers: [],
       queue: [],
-      timer: 900, // 15 minutes in seconds
+      timer: 1800, // 15 minutes in seconds
       isActive: false,
       isRunning: false
     },
     middle: {
       currentPlayers: [],
       queue: [],
-      timer: 900,
+      timer: 1800,
       isActive: false,
       isRunning: false
     },
     far: {
       currentPlayers: [],
       queue: [],
-      timer: 900,
+      timer: 1800,
       isActive: false,
       isRunning: false
     }
@@ -29,37 +29,49 @@ const BadmintonQueueApp = () => {
   const [editingQueue, setEditingQueue] = useState({ court: null, index: null, value: '' });
 
   // Timer effect
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCourts(prevCourts => {
-        const newCourts = { ...prevCourts };
-        
-        Object.keys(newCourts).forEach(courtName => {
-          const court = newCourts[courtName];
-          if (court.isRunning && court.timer > 0) {
-            court.timer -= 1;
-          } else if (court.isRunning && court.timer === 0) {
-            // Auto-end session when timer reaches 0
-            court.isRunning = false;
-            court.isActive = false;
-            court.currentPlayers = [];
-            court.timer = 900;
-            
-            // Move next group from queue to court if available
-            if (court.queue.length > 0) {
-              const nextGroup = court.queue.shift();
-              court.currentPlayers = nextGroup;
-              court.isActive = true;
-            }
-          }
-        });
-        
-        return newCourts;
-      });
-    }, 1000);
+const intervalRef = useRef(null);
 
-    return () => clearInterval(interval);
-  }, []);
+useEffect(() => {
+  if (intervalRef.current) return; // <-- guard for StrictMode re-mount
+  intervalRef.current = setInterval(() => {
+    setCourts(prev => {
+      const next = {};
+
+      for (const [name, court] of Object.entries(prev)) {
+        // default: keep as-is
+        let updated = court;
+
+        if (court.isRunning) {
+          if (court.timer > 0) {
+            updated = { ...court, timer: court.timer - 1 };
+          } else {
+            // time's up: stop current, auto-advance queue
+            const newQueue = court.queue.slice();
+            const nextGroup = newQueue.shift() || [];
+            updated = {
+              ...court,
+              currentPlayers: nextGroup,
+              queue: newQueue,
+              isActive: nextGroup.length > 0,
+              isRunning: nextGroup.length > 0,
+              // NOTE: 1800 = 30 min. If you want 15 min, use 900 instead.
+              timer: nextGroup.length > 0 ? 1800 : 1800
+            };
+          }
+        }
+
+        next[name] = updated;
+      }
+
+      return next;
+    });
+  }, 1000);
+
+  return () => {
+    clearInterval(intervalRef.current);
+    intervalRef.current = null;
+  };
+}, []);
 
   const handleNameChange = (index, value) => {
     const newNames = [...playerNames];
@@ -103,7 +115,7 @@ const BadmintonQueueApp = () => {
             queue: nextGroup,
             isActive: true,
             isRunning: true,
-            timer: court.timer === 0 ? 900 : court.timer
+            timer: court.timer === 0 ? 1800 : court.timer
           }
         };
       }
@@ -115,7 +127,7 @@ const BadmintonQueueApp = () => {
           [courtName]: {
             ...court,
             isRunning: true,
-            timer: court.timer === 0 ? 900 : court.timer
+            timer: court.timer === 0 ? 1800 : court.timer
           }
         };
       }
@@ -148,7 +160,7 @@ const BadmintonQueueApp = () => {
           queue: nextGroup,
           isActive: newCurrentPlayers.length > 0,
           isRunning: false,
-          timer: 900
+          timer: 1800
         }
       };
     });
@@ -159,7 +171,7 @@ const BadmintonQueueApp = () => {
       ...prev,
       [courtName]: {
         ...prev[courtName],
-        timer: 900,
+        timer: 1800,
         isRunning: false
       }
     }));
@@ -240,7 +252,7 @@ const BadmintonQueueApp = () => {
               fill="none"
               stroke={court.isRunning ? "#3b82f6" : "#6b7280"}
               strokeWidth="8"
-              strokeDasharray={`${(court.timer / 900) * 283} 283`}
+              strokeDasharray={`${(court.timer / 1800) * 283} 283`}
               className="transition-all duration-1000"
             />
           </svg>
