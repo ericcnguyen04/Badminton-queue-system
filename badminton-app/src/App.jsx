@@ -6,21 +6,21 @@ const BadmintonQueueApp = () => {
     door: {
       currentPlayers: [],
       queue: [],
-      timer: 1800, // 15 minutes in seconds
+      timer: 900, // 15 minutes in seconds
       isActive: false,
       isRunning: false
     },
     middle: {
       currentPlayers: [],
       queue: [],
-      timer: 1800,
+      timer: 900,
       isActive: false,
       isRunning: false
     },
     far: {
       currentPlayers: [],
       queue: [],
-      timer: 1800,
+      timer: 900,
       isActive: false,
       isRunning: false
     }
